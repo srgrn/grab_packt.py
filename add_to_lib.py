@@ -6,7 +6,7 @@ import sys
 
 LOG_LEVEL = 'WARNING'
 
-DEBUG = True
+DEBUG = False
 BOOK_FORMATS = [
     # 'epub',
     # 'mobi',
@@ -44,6 +44,8 @@ def main():
         'form_build_id': None,
     }
     logging.debug('setting login data without form_build_id ' + str(login_data))
+    if login_data['email'] is None or login_data['password'] is None:
+        error('You must provide credentials')
     free_learning_url = 'https://www.packtpub.com/packt/offers/free-learning'
     r = session.get(free_learning_url)
     tree = html.fromstring(r.text)
@@ -57,12 +59,12 @@ def main():
     else:
         error('Failed to set form_build_id')
     r = session.post(free_learning_url, headers={'content-type': 'application/x-www-form-urlencoded'}, data=login_data)
+    logging.info('Logged in to packtpub.com')
     tree = html.fromstring(r.text)
     elem = tree.xpath('//div[contains(@class,"error")]')
     # break_point()
     if len(elem) > 0 and "Sorry, you entered an invalid email address and password combination." in elem[0].text:
         error('Failed to login please check your credentials')
-    logging.debug('Logged in to packtpub.com')
     r = session.get(book_url)
     tree = html.fromstring(r.text)
     book_elem = tree.xpath('//div[contains(@class,"product-line")]')
