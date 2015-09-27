@@ -1,9 +1,9 @@
-FROM gliderlabs/alpine:3.2
+FROM alpine:3.2
 MAINTAINER Eran Zimbler <eran@zimbler.net>
 
 
-RUN apk --update add python
-RUN apk --update add --virtual build-dependencies py-pip python-dev build-base libxml2-dev libxslt-dev && pip install virtualenv
+RUN apk --update add python libxml2-dev libxslt-dev
+RUN apk --update add --virtual build-dependencies py-pip python-dev build-base  && pip install virtualenv
   
 
 
