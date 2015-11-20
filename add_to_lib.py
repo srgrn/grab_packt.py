@@ -96,6 +96,7 @@ def main():
         book_id = book_elem[0].get('nid')
         book_url = BASE_URL + '/ebook_download/' + book_id + '/' + bf
         fname = '('+ book_id + ')' + book_name  + '.' + bf
+        fname = fname.replace('/','_')
         if DOWNLOAD_NEW and os.path.exists(BOOKS_DIR +'/'+ fname):
             logging.debug('File '+ fname +' exists. Skip download')
             continue
