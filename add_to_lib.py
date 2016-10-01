@@ -10,7 +10,7 @@ DEBUG = False
 BOOK_FORMATS = [
     # 'epub',
     # 'mobi',
-    # 'pdf'
+    'pdf'
 ]
 if not BOOK_FORMATS:
     print "Error: Book format is not selected (e.g. pdf)."
@@ -55,7 +55,8 @@ def main():
         error('You must provide credentials')
 
     free_learning_url = 'https://www.packtpub.com/packt/offers/free-learning'
-    r = session.get(free_learning_url)
+    headers = {'User-Agent': 'My User Agent 1.0'}
+    r = session.get(free_learning_url,headers=headers)
     tree = html.fromstring(r.text)
     form_build_id_elem = tree.xpath('//input[@name="form_build_id"]')
     book_link_elem = tree.xpath('//a[@class="twelve-days-claim"]')
@@ -68,7 +69,7 @@ def main():
     else:
         error('Failed to set form_build_id')
 
-    r = session.post(free_learning_url, headers={'content-type': 'application/x-www-form-urlencoded'}, data=login_data)
+    r = session.post(free_learning_url, headers={'content-type': 'application/x-www-form-urlencoded','User-Agent': 'My User Agent 1.0'}, data=login_data)
     logging.info('Logged in to packtpub.com')
     tree = html.fromstring(r.text)
     elem = tree.xpath('//div[contains(@class,"error")]')
@@ -77,7 +78,7 @@ def main():
     if len(elem) > 0 and "Sorry, you entered an invalid email address and password combination." in elem[0].text:
         error('Failed to login please check your credentials')
 
-    r = session.get(book_url)
+    r = session.get(book_url,headers=headers)
     tree = html.fromstring(r.text)
     book_elem = tree.xpath('//div[contains(@class,"product-line")]')
     book_name = book_elem[0].get('title')
