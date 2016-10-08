@@ -33,7 +33,7 @@ def setup(args):
         except ValueError:
             logging.critical("Failed to read the config file probably not proper json")
             sys.exit(1)
-        except Exception, e:
+        except Exception as e:
             raise e
         return config
     else:
