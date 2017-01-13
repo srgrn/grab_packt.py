@@ -1,4 +1,4 @@
-FROM alpine:3.3
+FROM alpine:3.5
 MAINTAINER Eran Zimbler <eran@zimbler.net>
 
 WORKDIR /src
@@ -12,4 +12,4 @@ RUN apk --update add libxml2-dev libxslt-dev &&\
     pip install -r ./requirements.txt &&\
     apk del build-dependencies && rm -rf /var/cache/apk/*
 
-ENTRYPOINT ["python3", "add_to_lib.py"]
+ENTRYPOINT ["python3", "add_to_lib.py_v2"]
